@@ -11,12 +11,12 @@ package geolab.negocios;
  */
 public class Punto implements Objeto{
     
-    private int x,y;
+    private double x,y;
 
 
-    public Punto(){
-    x=0;
-    y=0;
+    public Punto(double x, double y, int i){
+    this.x = x;
+    this.y = y;
     }
     
     public Punto(int x, int y) {
@@ -28,7 +28,7 @@ public class Punto implements Objeto{
     
     
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
@@ -36,7 +36,7 @@ public class Punto implements Objeto{
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 

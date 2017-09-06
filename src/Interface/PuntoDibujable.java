@@ -5,21 +5,46 @@
  */
 package Interface;
 
-import geolab.negocios.*;
-
 import geolab.negocios.Punto;
+import javafx.scene.shape.Circle;
 
 /**
  *
  * @author cancita
  */
-public class PuntoDibujable extends  Punto implements ObjetoDibujable{
+public class PuntoDibujable extends Circle{
 
-    @Override
-    public void dibujar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Punto centro;
+    private static int RADIO=5;
+
+    public PuntoDibujable(){
+        super(0,0,5);
+        this.centro=new Punto(0,0);
+
     }
-    
-    
-    
+
+
+    public PuntoDibujable( Punto centro) {
+        super(centro.getX(), centro.getY(), RADIO);
+        this.centro = centro;
+    }
+
+
+    public Punto getCentro() {
+        return centro;
+    }
+
+    public void setCentro(Punto centro) {
+        this.centro = centro;
+        this.setCenterX(centro.getX());
+        this.setCenterY(centro.getY());
+    }
+
+    public static double getRADIO() {
+        return RADIO;
+    }
+
+    public static void setRADIO(int RADIO) {
+        PuntoDibujable.RADIO = RADIO;
+    }
 }

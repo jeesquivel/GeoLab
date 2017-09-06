@@ -12,18 +12,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
- * @author cancita
+ * @author chino
  */
 public class GeoLab extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
+        stage.setTitle("GeoLab");
+        stage.setScene(new Scene(root));
+
+
+
+
+
         stage.show();
     }
 
