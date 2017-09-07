@@ -19,7 +19,7 @@ public class Punto implements Objeto{
     this.y = y;
     }
     
-    public Punto(int x, int y) {
+    public Punto(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -32,7 +32,7 @@ public class Punto implements Objeto{
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 

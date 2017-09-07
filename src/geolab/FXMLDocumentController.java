@@ -45,10 +45,14 @@ public class FXMLDocumentController implements Initializable {
     public void handleLienzoMouseClick(MouseEvent event) {
         if ( barraHerramientaSelecccionadaActualmente==BarraHerramienta.PUNTOS)
             PaneLienzo.getChildren().add(new PuntoDibujable(new Punto(event.getX(),event.getY(),5)));
-        if( barraHerramientaSelecccionadaActualmente==BarraHerramienta.FLECHA & puntoSeleccionado!=null){
-            puntoSeleccionado.setCentro(new Punto(event.getX(),event.getY(),5));
-        }
-
+        else{
+            if (barraHerramientaSelecccionadaActualmente==BarraHerramienta.FLECHA){
+                if ( puntoSeleccionado==null)
+                    puntoSeleccionado=seleccionaPunto(event.getX(),event.getY(),PaneLienzo);
+                else
+                    puntoSeleccionado=null;
+            }
+         }
         labelBarraEstado.setText("cliked...");
     }
 
@@ -68,28 +72,28 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public void handleLienzoOnDraggedAction(MouseEvent event) {
 
-        labelBarraEstado.setText("dibujando...!");
-        if ( barraHerramientaSelecccionadaActualmente==BarraHerramienta.FLECHA ){
-            puntoSeleccionado=seleccionaPunto(event.getX(),event.getY(),PaneLienzo);
+        labelBarraEstado.setText("handleLienzoOnDraggedAction...!");
+        if( barraHerramientaSelecccionadaActualmente==BarraHerramienta.FLECHA & puntoSeleccionado!=null){
+            puntoSeleccionado.setCentro(new Punto(event.getX(),event.getY(),5));
+            System.out.println(event.getX());
         }
+
 
     }
 
     private  PuntoDibujable seleccionaPunto(double x, double y, Pane PaneLienzo){
         ObservableList listaObjetos= PaneLienzo.getChildren();
         int cont=0;
-        PuntoDibujable punto = new PuntoDibujable();
-
+        PuntoDibujable punto=null;
         while (punto==null && cont<listaObjetos.size()){
             Object objeto =listaObjetos.get(cont);
-            if ( objeto instanceof PuntoDibujable  && distancia((PuntoDibujable) objeto,x,y)<5){
-                puntoSeleccionado=(PuntoDibujable) objeto;
+            if ( objeto instanceof PuntoDibujable  && distancia((PuntoDibujable) objeto,x,y)<20){
+                punto=(PuntoDibujable) objeto;
             }
+            cont++;
 
         }
-
         return punto;
-
     }
 
     private double distancia(PuntoDibujable objeto, double x, double y) {

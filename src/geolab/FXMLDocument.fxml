@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="btnHerramienta" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="723.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="geolab.FXMLDocumentController">
+<BorderPane fx:id="btnHerramienta" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="723.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="geolab.FXMLDocumentController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -59,6 +59,6 @@
       <Label fx:id="labelBarraEstado" text="Barra de estado...." />
    </bottom>
    <center>
-      <Pane fx:id="PaneLienzo" onDragDetected="#handleLienzoOnDraggedAction" onMouseClicked="#handleLienzoMouseClick" onMouseDragged="#handleLienzoMouseDragged" />
+      <Pane fx:id="PaneLienzo" onMouseClicked="#handleLienzoMouseClick" onMouseDragged="#handleLienzoOnDraggedAction" />
    </center>
 </BorderPane>

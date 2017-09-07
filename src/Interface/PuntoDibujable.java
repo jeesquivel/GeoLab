@@ -18,8 +18,8 @@ public class PuntoDibujable extends Circle{
     private static int RADIO=5;
 
     public PuntoDibujable(){
-        super(0,0,5);
-        this.centro=new Punto(0,0);
+        super();
+        this.centro=new Punto(1,3,5);
 
     }
 
@@ -47,4 +47,6 @@ public class PuntoDibujable extends Circle{
     public static void setRADIO(int RADIO) {
         PuntoDibujable.RADIO = RADIO;
     }
+
+
 }
