@@ -10,7 +10,7 @@ import javafx.scene.shape.Circle;
 
 /**
  *
- * @author cancita
+ * @author chino
  */
 public class PuntoDibujable extends Circle{
 
@@ -19,7 +19,7 @@ public class PuntoDibujable extends Circle{
 
     public PuntoDibujable(){
         super();
-        this.centro=new Punto(1,3,5);
+        this.centro=new Punto(1,3,7);
 
     }
 

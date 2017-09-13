@@ -12,53 +12,53 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="btnHerramienta" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="723.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="geolab.FXMLDocumentController">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Archivo">
+<BorderPane fx:id="btnHerramienta" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="geolab.FXMLDocumentController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Archivo">
+                    <items>
+                        <MenuItem fx:id="menuArchivoCerrar" mnemonicParsing="false" onAction="#handleMenuArchivoCerrar" text="Cerrar" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Editar">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Ayuda">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <left>
+        <ToolBar fx:id="TolBarHerramientas" orientation="VERTICAL" prefHeight="466.0" prefWidth="92.0" BorderPane.alignment="TOP_LEFT">
             <items>
-              <MenuItem fx:id="menuArchivoCerrar" mnemonicParsing="false" onAction="#handleMenuArchivoCerrar" text="Cerrar" />
+                <GridPane prefHeight="129.0" prefWidth="66.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Button fx:id="btnHerramientaPunto" alignment="TOP_CENTER" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#handleHerramientaPunto" prefHeight="76.0" prefWidth="162.0" text="Puntos" textAlignment="CENTER" />
+                        <Button fx:id="btnHerramientaFlecha" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#handleHerramientaFlecha" prefHeight="57.0" prefWidth="91.0" text="Flecha" textAlignment="CENTER" GridPane.rowIndex="1" />
+                        <Button fx:id="btnHerramientaLinea" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#handleHerramientaLinea" prefHeight="55.0" prefWidth="87.0" text="Linea" textAlignment="CENTER" GridPane.rowIndex="2" />
+                    </children>
+                </GridPane>
             </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Editar">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Ayuda">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
-   <left>
-      <ToolBar orientation="VERTICAL" prefHeight="466.0" prefWidth="92.0" BorderPane.alignment="TOP_LEFT">
-        <items>
-            <GridPane prefHeight="129.0" prefWidth="66.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                <Button fx:id="btnHerramientaPunto" alignment="TOP_CENTER" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#handleHerramientaPunto" prefHeight="76.0" prefWidth="162.0" text="Puntos" textAlignment="CENTER" />
-                  <Button fx:id="btnHerramientaFlecha" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#handleHerramientaFlecha" prefHeight="57.0" prefWidth="91.0" text="Flecha" textAlignment="CENTER" GridPane.rowIndex="1" />
-                  <Button fx:id="btnHerramientaLinea" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#handleHerramientaLinea" prefHeight="55.0" prefWidth="87.0" text="Linea" textAlignment="CENTER" GridPane.rowIndex="2" />
-               </children>
-            </GridPane>
-        </items>
-      </ToolBar>
-   </left>
-   <bottom>
-      <Label fx:id="labelBarraEstado" text="Barra de estado...." />
-   </bottom>
-   <center>
-      <Pane fx:id="PaneLienzo" onMouseClicked="#handleLienzoMouseClick" onMouseDragged="#handleLienzoOnDraggedAction" />
-   </center>
+        </ToolBar>
+    </left>
+    <bottom>
+        <Label fx:id="labelBarraEstado" text="Barra de estado...." />
+    </bottom>
+    <center>
+        <Pane fx:id="PaneLienzo" onDragDetected="#handlePaneLienzoOnDragDetectedAction" onMouseClicked="#handleLienzoMouseClick" onMouseDragged="#handleLienzoMouseDragged" prefHeight="466.0" prefWidth="631.0" />
+    </center>
 </BorderPane>

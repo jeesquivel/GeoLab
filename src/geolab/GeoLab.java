@@ -18,13 +18,12 @@ public class GeoLab extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
+
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+
+
         stage.setTitle("GeoLab");
         stage.setScene(new Scene(root));
-
-
-
-
 
         stage.show();
     }
@@ -33,6 +32,7 @@ public class GeoLab extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
         launch(args);
     }
     
