@@ -11,6 +11,6 @@ package Interface;
  */
 public interface ObjetoDibujable {
     
-    public void dibujar();
+     void dibujar();
     
 }

@@ -29,51 +29,47 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public Pane PaneLienzo;
 
-
-
-
     private PuntoDibujable puntoSeleccionado;
-    private RectaDibujable recta;
+    private ObservableList<RectaDibujable> rectasDibujadas=null;
 
     public ArrayList<PuntoDibujable> puntosRecta=new ArrayList<>();
 
+
+
     private enum BarraHerramienta{
-        FLECHA,
+        MOVER,
         PUNTOS,
         LINEA
     }
 
-    private BarraHerramienta barraHerramientaSelecccionadaActualmente=BarraHerramienta.FLECHA;
+    private BarraHerramienta barraHerramientaSelecccionadaActualmente=BarraHerramienta.MOVER;
 
     @FXML
     public void handleLienzoMouseClick(MouseEvent event) {
 
 
-        if ( barraHerramientaSelecccionadaActualmente==BarraHerramienta.PUNTOS){
+        if ( barraHerramientaSelecccionadaActualmente==BarraHerramienta.PUNTOS)
             PaneLienzo.getChildren().add(new PuntoDibujable(new Punto(event.getX(),event.getY(),5)));
-
-
-        }
-
+        
         else{
-            if (barraHerramientaSelecccionadaActualmente==BarraHerramienta.FLECHA){
+            if (barraHerramientaSelecccionadaActualmente==BarraHerramienta.MOVER){
                 if ( puntoSeleccionado!=null )
                     puntoSeleccionado.setFill(Color.BLACK);
                     puntoSeleccionado=null;
-
             }
         }
 
-        if ( barraHerramientaSelecccionadaActualmente==BarraHerramienta.LINEA){
-            puntoSeleccionado=seleccionaPunto(event.getX(), event.getY(),PaneLienzo);
-            if ( puntoSeleccionado!=null){
-                System.out.println("mierda");
-                puntosRecta.add(puntoSeleccionado);
-                puntoSeleccionado=null;
+        if ( barraHerramientaSelecccionadaActualmente==BarraHerramienta.LINEA) {
+            puntoSeleccionado = seleccionaPunto(event.getX(), event.getY(), PaneLienzo);
+            if (puntoSeleccionado != null) {
+                if (!puntosRecta.contains(puntoSeleccionado)) {
+                    puntosRecta.add(puntoSeleccionado);
+                    puntoSeleccionado = null;
+                }
             }
-            if ( puntosRecta.size()==2 ){
-                PaneLienzo.getChildren().add(new Line(puntosRecta.get(0).getCentro().getX(),puntosRecta.get(0).getCentro().getY(),
-                        puntosRecta.get(1).getCentro().getX(),puntosRecta.get(1).getCentro().getY()));
+            if (puntosRecta.size() == 2) {
+                RectaDibujable nuevaRecta=new RectaDibujable(puntosRecta.get(0), puntosRecta.get(1));
+                PaneLienzo.getChildren().add(nuevaRecta);
                 puntosRecta.clear();
 
             }
@@ -82,6 +78,19 @@ public class FXMLDocumentController implements Initializable {
         labelBarraEstado.setText("cliked");
     }
 
+
+    /**
+     * si el punto esta en una recta entonces al moverla redibuja la recta con el nuevo punto
+     * @param punto
+     */
+    public void CambiarPuntoRecta(PuntoDibujable punto){
+        if (rectasDibujadas.size()!=0){
+           for ( RectaDibujable i: rectasDibujadas){
+                PuntoDibujable P1= i.puntoDiferente(punto);
+                PaneLienzo.getChildren().remove(i);
+           }
+        }
+    }
 
     @FXML
     public void handleMenuArchivoCerrar(ActionEvent event) {
@@ -93,16 +102,22 @@ public class FXMLDocumentController implements Initializable {
     public void handleLienzoMouseDragged(MouseEvent event) {
         labelBarraEstado.setText("dibujando...!");
 
-        if(barraHerramientaSelecccionadaActualmente == BarraHerramienta.FLECHA
+        if(barraHerramientaSelecccionadaActualmente == BarraHerramienta.MOVER
                 && puntoSeleccionado != null) {
             int x =  valorMedio(0, (int) event.getX(),(int) PaneLienzo.getWidth());
             int y =  valorMedio(0, (int) event.getY(), (int)PaneLienzo.getHeight());
-            puntoSeleccionado.setCentro(new Punto(x,  y));
+
+            rectasDibujadas=seleccionarRectas(puntoSeleccionado);
+            Punto nuevoPunto= new Punto(x,  y);
+            puntoSeleccionado.setCentro(nuevoPunto);
+            CambiarPuntoRecta(puntoSeleccionado);
+
             puntoSeleccionado.setFill(Color.RED);
+
+
 
             double xc =pantallaCordenadasX(event,puntoSeleccionado);
             double yc=pantallaCordenadasY(event,puntoSeleccionado);
-
             double xPanel=CordenadasPantallaX(event,xc);
             double yPanel=CordenadasPantallaY(event,yc);
 
@@ -131,9 +146,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public void handlePaneLienzoOnDragDetectedAction(MouseEvent event) {
         labelBarraEstado.setText("Drag Detected");
-        if(barraHerramientaSelecccionadaActualmente == BarraHerramienta.FLECHA){
+        if(barraHerramientaSelecccionadaActualmente == BarraHerramienta.MOVER){
             puntoSeleccionado = seleccionaPunto(event.getX(), event.getY(), PaneLienzo);
-
+            if (puntoSeleccionado!=null)
+                rectasDibujadas=seleccionarRectas(puntoSeleccionado);
         }
     }
 
@@ -145,14 +161,31 @@ public class FXMLDocumentController implements Initializable {
             Object objeto =listaObjetos.get(cont);
             if ( objeto instanceof PuntoDibujable  && distancia((PuntoDibujable) objeto,x,y)<15){
                 punto=(PuntoDibujable) objeto;
-                punto.setFill(Color.BLACK);;
+                punto.setFill(Color.BLACK);
             }
             cont++;
-
         }
-
         return punto;
     }
+
+
+    private  ObservableList seleccionarRectas(PuntoDibujable punto){
+        ObservableList listaObjetos= PaneLienzo.getChildren();
+        ObservableList rectas = null;
+        int cont=0;
+        while (punto==null && cont<listaObjetos.size()){
+            Object objeto =listaObjetos.get(cont);
+            if ( objeto instanceof RectaDibujable  && ((RectaDibujable) objeto).estaInRecta(punto)){
+                rectas.add(objeto);
+            }
+            cont++;
+        }
+        return rectas;
+    }
+
+
+
+
 
     private double distancia(PuntoDibujable objeto, double x, double y) {
         return distancia(objeto.getCenterX(),objeto.getCenterY(),x,y) ;
@@ -171,14 +204,13 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     public void handleHerramientaFlecha(ActionEvent event){
-        barraHerramientaSelecccionadaActualmente=BarraHerramienta.FLECHA;
+        barraHerramientaSelecccionadaActualmente=BarraHerramienta.MOVER;
         labelBarraEstado.setText("Flecha...!");
     }
 
     @FXML
     public void handleHerramientaLinea(ActionEvent event){
         barraHerramientaSelecccionadaActualmente=BarraHerramienta.LINEA;
-
         labelBarraEstado.setText("linea...!");
     }
 
@@ -234,8 +266,6 @@ public class FXMLDocumentController implements Initializable {
         PaneLienzo.getChildren().add(ejeX);
         PaneLienzo.getChildren().add(ejeY);
     }
-
-
 
 
 

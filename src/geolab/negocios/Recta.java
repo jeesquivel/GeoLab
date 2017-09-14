@@ -8,8 +8,8 @@ public class Recta implements  Objeto {
 
 
 
-
     public Recta(PuntoDibujable puntoDibujable, PuntoDibujable dibujable){};
+
 
     public Recta(Punto pInicio, Punto pFinal) {
         this.pInicio = pInicio;

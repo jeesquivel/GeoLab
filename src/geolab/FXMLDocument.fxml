@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="btnHerramienta" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="geolab.FXMLDocumentController">
+<BorderPane fx:id="btnHerramienta" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="geolab.FXMLDocumentController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -48,7 +48,7 @@
                     </rowConstraints>
                     <children>
                         <Button fx:id="btnHerramientaPunto" alignment="TOP_CENTER" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#handleHerramientaPunto" prefHeight="76.0" prefWidth="162.0" text="Puntos" textAlignment="CENTER" />
-                        <Button fx:id="btnHerramientaFlecha" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#handleHerramientaFlecha" prefHeight="57.0" prefWidth="91.0" text="Flecha" textAlignment="CENTER" GridPane.rowIndex="1" />
+                        <Button fx:id="btnHerramientaFlecha" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#handleHerramientaFlecha" prefHeight="57.0" prefWidth="91.0" text="Mover" textAlignment="CENTER" GridPane.rowIndex="1" />
                         <Button fx:id="btnHerramientaLinea" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#handleHerramientaLinea" prefHeight="55.0" prefWidth="87.0" text="Linea" textAlignment="CENTER" GridPane.rowIndex="2" />
                     </children>
                 </GridPane>
