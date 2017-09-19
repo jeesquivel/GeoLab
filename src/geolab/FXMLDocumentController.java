@@ -3,17 +3,21 @@ package geolab;
 
 import Interface.PuntoDibujable;
 import Interface.RectaDibujable;
+import geolab.negocios.Objeto;
 import geolab.negocios.Punto;
+import geolab.negocios.Recta;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import org.w3c.dom.css.Rect;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,10 +34,9 @@ public class FXMLDocumentController implements Initializable {
     public Pane PaneLienzo;
 
     private PuntoDibujable puntoSeleccionado;
-    private ObservableList<RectaDibujable> rectasDibujadas=null;
 
-    public ArrayList<PuntoDibujable> puntosRecta=new ArrayList<>();
 
+    private ArrayList<PuntoDibujable> puntosSeleccionados=new ArrayList<>();
 
 
     private enum BarraHerramienta{
@@ -61,36 +64,22 @@ public class FXMLDocumentController implements Initializable {
 
         if ( barraHerramientaSelecccionadaActualmente==BarraHerramienta.LINEA) {
             puntoSeleccionado = seleccionaPunto(event.getX(), event.getY(), PaneLienzo);
-            if (puntoSeleccionado != null) {
-                if (!puntosRecta.contains(puntoSeleccionado)) {
-                    puntosRecta.add(puntoSeleccionado);
-                    puntoSeleccionado = null;
+            if (puntoSeleccionado!=null){
+                puntosSeleccionados.add(puntoSeleccionado);
+                puntoSeleccionado=null;
+                if (puntosSeleccionados.size()==2){
+                    PaneLienzo.getChildren().add(new RectaDibujable(puntosSeleccionados.get(0), puntosSeleccionados.get(1)));
+                    puntosSeleccionados.clear();
                 }
             }
-            if (puntosRecta.size() == 2) {
-                RectaDibujable nuevaRecta=new RectaDibujable(puntosRecta.get(0), puntosRecta.get(1));
-                PaneLienzo.getChildren().add(nuevaRecta);
-                puntosRecta.clear();
 
-            }
+
         }
 
         labelBarraEstado.setText("cliked");
     }
 
 
-    /**
-     * si el punto esta en una recta entonces al moverla redibuja la recta con el nuevo punto
-     * @param punto
-     */
-    public void CambiarPuntoRecta(PuntoDibujable punto){
-        if (rectasDibujadas.size()!=0){
-           for ( RectaDibujable i: rectasDibujadas){
-                PuntoDibujable P1= i.puntoDiferente(punto);
-                PaneLienzo.getChildren().remove(i);
-           }
-        }
-    }
 
     @FXML
     public void handleMenuArchivoCerrar(ActionEvent event) {
@@ -107,15 +96,13 @@ public class FXMLDocumentController implements Initializable {
             int x =  valorMedio(0, (int) event.getX(),(int) PaneLienzo.getWidth());
             int y =  valorMedio(0, (int) event.getY(), (int)PaneLienzo.getHeight());
 
-            rectasDibujadas=seleccionarRectas(puntoSeleccionado);
+            Punto anterior=puntoSeleccionado.getCentro();
             Punto nuevoPunto= new Punto(x,  y);
+            ObtenerRectasPunto(anterior,nuevoPunto);
             puntoSeleccionado.setCentro(nuevoPunto);
-            CambiarPuntoRecta(puntoSeleccionado);
+
 
             puntoSeleccionado.setFill(Color.RED);
-
-
-
             double xc =pantallaCordenadasX(event,puntoSeleccionado);
             double yc=pantallaCordenadasY(event,puntoSeleccionado);
             double xPanel=CordenadasPantallaX(event,xc);
@@ -148,8 +135,6 @@ public class FXMLDocumentController implements Initializable {
         labelBarraEstado.setText("Drag Detected");
         if(barraHerramientaSelecccionadaActualmente == BarraHerramienta.MOVER){
             puntoSeleccionado = seleccionaPunto(event.getX(), event.getY(), PaneLienzo);
-            if (puntoSeleccionado!=null)
-                rectasDibujadas=seleccionarRectas(puntoSeleccionado);
         }
     }
 
@@ -169,24 +154,6 @@ public class FXMLDocumentController implements Initializable {
     }
 
 
-    private  ObservableList seleccionarRectas(PuntoDibujable punto){
-        ObservableList listaObjetos= PaneLienzo.getChildren();
-        ObservableList rectas = null;
-        int cont=0;
-        while (punto==null && cont<listaObjetos.size()){
-            Object objeto =listaObjetos.get(cont);
-            if ( objeto instanceof RectaDibujable  && ((RectaDibujable) objeto).estaInRecta(punto)){
-                rectas.add(objeto);
-            }
-            cont++;
-        }
-        return rectas;
-    }
-
-
-
-
-
     private double distancia(PuntoDibujable objeto, double x, double y) {
         return distancia(objeto.getCenterX(),objeto.getCenterY(),x,y) ;
     }
@@ -194,6 +161,101 @@ public class FXMLDocumentController implements Initializable {
     private double distancia(double x, double y, double x1, double y1){
         return Math.sqrt(Math.pow(x-x1,2)+Math.pow(y-y1,2));
     }
+
+    /*
+        para las rectas
+     */
+
+    /**
+     * retorna las rectas que pasan por ese punto
+     * @param
+     * @return
+     */
+    public void  ObtenerRectasPunto(Punto puntoAnterior,Punto PuntoNuevo){
+        ObservableList listaObjetos= PaneLienzo.getChildren();
+        int cont=0;
+        while (cont<listaObjetos.size()){
+            Object objeto =listaObjetos.get(cont);
+            if ( objeto instanceof RectaDibujable){
+                PuntoDibujable puntoD=new PuntoDibujable(puntoAnterior);
+                if (((RectaDibujable) objeto).PuntoInRecta(puntoD)){
+                    Punto pOpuesto= ((RectaDibujable) objeto).puntoOpuesto(puntoAnterior);
+                    if (((RectaDibujable) objeto).isInicio(puntoD.getCentro())){
+                        Recta recta=new Recta(PuntoNuevo,pOpuesto);
+                        recta=ajustarRecta(recta);
+                        ((RectaDibujable) objeto).setRecta(recta);
+                    }
+                    else {
+                        Recta recta=new Recta(((RectaDibujable) objeto).getRecta().getpInicio(), PuntoNuevo);
+                        ((RectaDibujable) objeto).setRecta(ajustarRecta(recta));
+                    }
+                }
+            }
+            cont++;
+        }
+
+    }
+
+
+    public Recta ajustarRecta(Recta recta){
+            Punto inicioP= recta.getpFinal();
+            Punto finalP=recta.getpInicio();
+            Punto vDirector=new Punto(inicioP.getX()-finalP.getX(),inicioP.getY()-finalP.getY());
+            Punto inicioN = null,finalN = null;
+
+            /*
+                Si x=0
+             */
+            double y1= inicioP.getY()+(-inicioP.getX()/vDirector.getX())*vDirector.getY();
+            if (0<=y1 && y1<=PaneLienzo.getHeight()){
+                inicioN= new Punto(0,y1);
+            }else{
+                double x;
+                if (y1>PaneLienzo.getHeight()){
+                     x=inicioP.getX()+((PaneLienzo.getHeight()-inicioP.getY())/vDirector.getY())*vDirector.getX();
+                    inicioN= new Punto(x,PaneLienzo.getHeight());
+                }else{
+                     x=inicioP.getX()+((-inicioP.getY())/vDirector.getY())*vDirector.getX();
+                    inicioN= new Punto(x,0);
+                }
+
+            }
+            /*
+                Si x=max
+             */
+        double y2= inicioP.getY()+((PaneLienzo.getWidth()-inicioP.getX())/vDirector.getX())*vDirector.getY();
+        if (0<=y2 && y2<=PaneLienzo.getHeight()){
+            finalN= new Punto(PaneLienzo.getWidth(),y2);
+        }else{
+            double x;
+            if (y2>PaneLienzo.getHeight()){
+                x=inicioP.getX()+((PaneLienzo.getHeight()-inicioP.getY())/vDirector.getY())*vDirector.getX();
+                y2=PaneLienzo.getHeight();
+                finalN= new Punto(x,y2);
+            }else{
+                x=inicioP.getX()+((-inicioP.getY())/vDirector.getY())*vDirector.getX();
+                y2=0;
+                finalN= new Punto(x,y2);
+            }
+            
+        }
+        return new Recta(inicioN,finalN);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @FXML

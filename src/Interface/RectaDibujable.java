@@ -4,63 +4,51 @@ import geolab.negocios.Punto;
 import geolab.negocios.Recta;
 import javafx.scene.shape.Line;
 
-public class RectaDibujable extends Line {
-    public PuntoDibujable getP1() {
-        return P1;
+/**
+ * Created by Jeison on 18 sep 2017.
+ */
+public class RectaDibujable extends Line{
+
+
+    public Recta getRecta() {
+        return recta;
     }
 
-    public PuntoDibujable getP2() {
-        return P2;
+    public Recta recta;
+
+    public RectaDibujable() {
     }
 
-    private PuntoDibujable P1;
-    private PuntoDibujable P2;
-    public RectaDibujable(){
-        super();
-    }
-
-    public RectaDibujable(PuntoDibujable p1, PuntoDibujable p2){
+    public RectaDibujable(PuntoDibujable p1, PuntoDibujable p2) {
         super(p1.getCentro().getX(),p1.getCentro().getY(),p2.getCentro().getX(),p2.getCentro().getY());
-        this.P1=p1;
-        this.P2=p2;
+        recta=new Recta(p1.getCentro(),p2.getCentro());
     }
 
-    /**
-     * verifica si un punto esta en la recta
-     * @param punto
-     * @return
-     */
-    public boolean estaInRecta(PuntoDibujable punto){
-        if (punto==P1 || punto==P2){
-            System.out.println("esta en recta");
+
+    public void setRecta(Recta recta) {
+        this.recta = recta;
+        this.setEndX(recta.getpFinal().getX());
+        this.setEndY(recta.getpFinal().getY());
+        this.setStartX(recta.getpInicio().getX());
+        this.setStartY(recta.getpInicio().getY());
+    }
+
+
+    public boolean isInicio(Punto punto){
+        return recta.pInicio==punto;
+    }
+
+    public Punto puntoOpuesto(Punto punto){
+        if (punto==recta.getpInicio()){
+            return recta.getpFinal();
+        }else
+            return punto;
+    }
+
+    public boolean PuntoInRecta(PuntoDibujable punto){
+        if (recta.getpInicio()==punto.getCentro() || recta.getpFinal()==punto.getCentro())
             return true;
-       }
         else
-            System.out.println("esta en recta");
-        return false;
-    }
-
-
-    public void setPuntoNuevo(PuntoDibujable punto){
-        if (punto!=P1)
-            P2=punto;
-        else
-            P1=punto;
-    }
-
-    public PuntoDibujable puntoDiferente(PuntoDibujable punto){
-        if (punto==P1)
-           return  P2;
-        else
-            return P1;
-    }
-
-
-    @Override
-    public String toString() {
-        return "RectaDibujable{" +
-                "P1=" + P1 +
-                ", P2=" + P2 +
-                '}';
+            return false;
     }
 }
