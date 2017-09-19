@@ -9,14 +9,18 @@ import geolab.negocios.Recta;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.w3c.dom.css.Rect;
 
 import java.net.URL;
@@ -34,6 +38,7 @@ public class FXMLDocumentController implements Initializable {
     public Pane PaneLienzo;
 
     private PuntoDibujable puntoSeleccionado;
+
 
 
     private ArrayList<PuntoDibujable> puntosSeleccionados=new ArrayList<>();
@@ -65,8 +70,9 @@ public class FXMLDocumentController implements Initializable {
         if ( barraHerramientaSelecccionadaActualmente==BarraHerramienta.LINEA) {
             puntoSeleccionado = seleccionaPunto(event.getX(), event.getY(), PaneLienzo);
             if (puntoSeleccionado!=null){
-                puntosSeleccionados.add(puntoSeleccionado);
-                puntoSeleccionado=null;
+                if (!puntosSeleccionados.contains(puntoSeleccionado)){
+                    puntosSeleccionados.add(puntoSeleccionado);
+
                 if (puntosSeleccionados.size()==2){
                     Punto punto1= puntosSeleccionados.get(0).getCentro();
                     Punto punto2= puntosSeleccionados.get(1).getCentro();
@@ -74,7 +80,8 @@ public class FXMLDocumentController implements Initializable {
                     recta= ajustarRecta(recta);
                     PaneLienzo.getChildren().add(new RectaDibujable(recta.getpInicio(),recta.getpFinal(),puntosSeleccionados.get(0),puntosSeleccionados.get(1)));
                     puntosSeleccionados.clear();
-                }
+                }}
+                puntoSeleccionado=null;
             }
 
 
@@ -268,18 +275,23 @@ public class FXMLDocumentController implements Initializable {
     public void handleHerramientaPunto(ActionEvent event){
         barraHerramientaSelecccionadaActualmente=BarraHerramienta.PUNTOS;
         labelBarraEstado.setText("punto...!");
+        puntosSeleccionados.clear();
     }
 
     @FXML
     public void handleHerramientaFlecha(ActionEvent event){
         barraHerramientaSelecccionadaActualmente=BarraHerramienta.MOVER;
         labelBarraEstado.setText("Flecha...!");
+        puntosSeleccionados.clear();
+
     }
 
     @FXML
     public void handleHerramientaLinea(ActionEvent event){
         barraHerramientaSelecccionadaActualmente=BarraHerramienta.LINEA;
         labelBarraEstado.setText("linea...!");
+        puntosSeleccionados.clear();
+
     }
 
 
@@ -333,8 +345,11 @@ public class FXMLDocumentController implements Initializable {
         ejeX.setFill(Color.LIGHTBLUE);
         ejeY.setFill(Color.LIGHTBLUE);
 
+        /*
         PaneLienzo.getChildren().add(ejeX);
         PaneLienzo.getChildren().add(ejeY);
+         */
+
     }
 
 
@@ -345,6 +360,8 @@ public class FXMLDocumentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+
         DibujarLinea(PaneLienzo);
     }
 
