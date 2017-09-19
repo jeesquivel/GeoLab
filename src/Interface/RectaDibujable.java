@@ -19,18 +19,21 @@ public class RectaDibujable extends Line{
     public RectaDibujable() {
     }
 
-    public RectaDibujable(PuntoDibujable p1, PuntoDibujable p2) {
-        super(p1.getCentro().getX(),p1.getCentro().getY(),p2.getCentro().getX(),p2.getCentro().getY());
-        recta=new Recta(p1.getCentro(),p2.getCentro());
+    public RectaDibujable(Punto p1, Punto p2, PuntoDibujable pDibujable1, PuntoDibujable pDibujable2) {
+        super(p1.getX(),p1.getY(),p2.getX(),p2.getY());
+        recta=new Recta(pDibujable1.getCentro(),pDibujable2.getCentro());
     }
 
 
-    public void setRecta(Recta recta) {
+    public void setRecta(Recta recta,Punto p1, Punto p2) {
         this.recta = recta;
         this.setEndX(recta.getpFinal().getX());
         this.setEndY(recta.getpFinal().getY());
         this.setStartX(recta.getpInicio().getX());
         this.setStartY(recta.getpInicio().getY());
+        recta.pInicio=p1;
+        recta.pFinal=p2;
+
     }
 
 

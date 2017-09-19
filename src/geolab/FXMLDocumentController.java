@@ -68,7 +68,11 @@ public class FXMLDocumentController implements Initializable {
                 puntosSeleccionados.add(puntoSeleccionado);
                 puntoSeleccionado=null;
                 if (puntosSeleccionados.size()==2){
-                    PaneLienzo.getChildren().add(new RectaDibujable(puntosSeleccionados.get(0), puntosSeleccionados.get(1)));
+                    Punto punto1= puntosSeleccionados.get(0).getCentro();
+                    Punto punto2= puntosSeleccionados.get(1).getCentro();
+                    Recta recta= new Recta(punto1, punto2);
+                    recta= ajustarRecta(recta);
+                    PaneLienzo.getChildren().add(new RectaDibujable(recta.getpInicio(),recta.getpFinal(),puntosSeleccionados.get(0),puntosSeleccionados.get(1)));
                     puntosSeleccionados.clear();
                 }
             }
@@ -183,11 +187,13 @@ public class FXMLDocumentController implements Initializable {
                     if (((RectaDibujable) objeto).isInicio(puntoD.getCentro())){
                         Recta recta=new Recta(PuntoNuevo,pOpuesto);
                         recta=ajustarRecta(recta);
-                        ((RectaDibujable) objeto).setRecta(recta);
+                        ((RectaDibujable) objeto).setRecta(recta,PuntoNuevo,pOpuesto);
                     }
                     else {
-                        Recta recta=new Recta(((RectaDibujable) objeto).getRecta().getpInicio(), PuntoNuevo);
-                        ((RectaDibujable) objeto).setRecta(ajustarRecta(recta));
+                        Punto puntoInicio=((RectaDibujable) objeto).getRecta().getpInicio();
+                        Recta recta=new Recta(puntoInicio, PuntoNuevo);
+                        recta=ajustarRecta(recta);
+                        ((RectaDibujable) objeto).setRecta(recta,puntoInicio,PuntoNuevo);
                     }
                 }
             }
@@ -324,10 +330,16 @@ public class FXMLDocumentController implements Initializable {
         Line ejeX = new Line(PaneLienzo.getPrefWidth()/2,0,PaneLienzo.getPrefWidth()/2,PaneLienzo.getPrefHeight());
         Line ejeY = new Line(0,PaneLienzo.getPrefHeight()/2,PaneLienzo.getPrefWidth(),PaneLienzo.getPrefHeight()/2);
 
+        ejeX.setFill(Color.LIGHTBLUE);
+        ejeY.setFill(Color.LIGHTBLUE);
 
         PaneLienzo.getChildren().add(ejeX);
         PaneLienzo.getChildren().add(ejeY);
     }
+
+
+
+
 
 
 
