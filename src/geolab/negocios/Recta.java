@@ -1,25 +1,58 @@
 package geolab.negocios;
 
-
+/**
+ *  @author : Jeison Esquivel
+ *  @version no se
+ */
 public class Recta implements Objeto {
-   public Punto pInicio;
-   public Punto pFinal;
+    private Punto pInicio;
+    private Punto pFinal;
 
-   public Punto extremo1;
-    public Punto extremo2;
+    /**
+     *  Asigna punto de inicio de la recta
+     * @param pInicio Punto
+     */
+    public void setpInicio(Punto pInicio) {
+        this.pInicio = pInicio;
+    }
 
+    /**
+     *  Asigna punto  final de la recta
+     * @param pFinal Punto
+     */
+    public void setpFinal(Punto pFinal) {
+        this.pFinal = pFinal;
+    }
+
+
+    /**
+     * Constructor por default
+     */
     public Recta(){};
 
+
+    /**
+     *  Constructor
+     * @param pInicio Puto de inicio
+     * @param pFinal Punto de finalizacion
+     */
     public Recta(Punto pInicio, Punto pFinal) {
         this.pInicio = pInicio;
         this.pFinal = pFinal;
     }
 
+    /**
+     * Obtiene el punto de inicio de la recta
+     * @return Punto
+     */
     public Punto getpInicio() {
         return pInicio;
     }
 
-
+    /**
+     * Obtiene el punto final de la recta
+     * @return Punto
+     */
     public Punto getpFinal() {
         return pFinal;
     }

@@ -10,43 +10,46 @@ import javafx.scene.shape.Circle;
 
 /**
  *
- * @author chino
+ * @author Jeison Esquivel
  */
 public class PuntoDibujable extends Circle{
 
-    Punto centro;
+    private Punto centro;
     private static int RADIO=5;
 
+    /**
+     * Constructor
+     */
     public PuntoDibujable(){
         super();
         this.centro=new Punto(1,3,7);
-
     }
 
-
+    /**
+     * Constructor
+     * @param centro centro del punto
+     */
     public PuntoDibujable( Punto centro) {
         super(centro.getX(), centro.getY(), RADIO);
         this.centro = centro;
     }
 
-
+    /**
+     * Obtener centro del punto
+     * @return centro
+     */
     public Punto getCentro() {
         return centro;
     }
 
+    /**
+     * Asigna un punto al centro del punto Dibujable
+     * @param centro centro del punto dibujable
+     */
     public void setCentro(Punto centro) {
         this.centro = centro;
         this.setCenterX(centro.getX());
         this.setCenterY(centro.getY());
     }
-
-    public static double getRADIO() {
-        return RADIO;
-    }
-
-    public static void setRADIO(int RADIO) {
-        PuntoDibujable.RADIO = RADIO;
-    }
-
 
 }

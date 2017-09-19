@@ -62,6 +62,6 @@
         <Label fx:id="labelBarraEstado" text="Barra de estado...." />
     </bottom>
     <center>
-        <Pane fx:id="PaneLienzo" nodeOrientation="LEFT_TO_RIGHT" onDragDetected="#handlePaneLienzoOnDragDetectedAction" onMouseClicked="#handleLienzoMouseClick" onMouseDragged="#handleLienzoMouseDragged" prefHeight="468.0" prefWidth="638.0" style="-fx-background-color: Cyan;" BorderPane.alignment="BOTTOM_LEFT" />
+        <Pane fx:id="PaneLienzo" nodeOrientation="LEFT_TO_RIGHT" onDragDetected="#handlePaneLienzoOnDragDetectedAction" onMouseClicked="#handleLienzoMouseClick" onMouseDragged="#handleLienzoMouseDragged" prefHeight="759.0" prefWidth="832.0" style="-fx-background-color: Cyan;" BorderPane.alignment="BOTTOM_LEFT" />
     </center>
 </BorderPane>

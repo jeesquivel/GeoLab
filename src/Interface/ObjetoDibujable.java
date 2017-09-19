@@ -10,7 +10,8 @@ package Interface;
  * @author jeison
  */
 public interface ObjetoDibujable {
-    
+
+
      void dibujar();
     
 }

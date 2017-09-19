@@ -7,43 +7,53 @@ package geolab.negocios;
 
 /**
  *
- * @author jeison
+ * @author Jeison Esquivel
  */
 public class Punto implements Objeto{
     
     private double x,y;
 
-
+    /**
+     * Ccnstructor
+     * @param x CORDENADA x
+     * @param y ORDENADA y
+     * @param i GRueSOR DEL PUNTO
+     */
     public Punto(double x, double y, int i){
     this.x = x;
     this.y = y;
     }
-    
+
+    /**
+     * @param x cordenada x
+     * @param y cordenaad y
+     */
     public Punto(double x, double y) {
         this.x = x;
         this.y = y;
     }
-    
-    
-    
-    
 
+
+    /**
+     * Obtener valor x
+     * @return double
+     */
     public double getX() {
         return x;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
+    /**
+     * Obtener valor y
+     * @return double
+     */
     public double getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
+    /**
+     * Metodo para imprimir el objeto Punto por medio de un string
+     * @return string
+     */
     @Override
     public String toString() {
         return "Punto{" + "x=" + x + ", y=" + y + '}';

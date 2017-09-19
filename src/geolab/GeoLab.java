@@ -20,14 +20,10 @@ public class GeoLab extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-
         stage.setTitle("GeoLab");
         stage.setScene(new Scene(root,900,800));
         stage.setResizable(false);
-
-
         stage.show();
     }
 
